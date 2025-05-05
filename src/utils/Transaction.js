@@ -17,7 +17,6 @@ import {
 import * as map from 'lib0/map'
 import * as math from 'lib0/math'
 import * as set from 'lib0/set'
-import * as logging from 'lib0/logging'
 import { callAll } from 'lib0/function'
 
 /**
@@ -352,7 +351,7 @@ const cleanupTransactions = (transactionCleanups, i) => {
       }
       if (!transaction.local && transaction.afterState.get(doc.clientID) !== transaction.beforeState.get(doc.clientID)) {
         const newClientID = generateNewClientId()
-        logging.print(logging.ORANGE, logging.BOLD, '[yjs] ', logging.UNBOLD, logging.RED, 'Changed the client-id because another client seems to be using it.', {
+        console.warn('[yjs] ', 'Changed the client-id because another client seems to be using it.', {
           doc,
           clientID: doc.clientID,
           clientIDBefore: transaction.beforeState.get(doc.clientID),
