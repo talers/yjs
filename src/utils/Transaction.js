@@ -351,7 +351,7 @@ const cleanupTransactions = (transactionCleanups, i) => {
       }
       if (!transaction.local && transaction.afterState.get(doc.clientID) !== transaction.beforeState.get(doc.clientID)) {
         const newClientID = generateNewClientId()
-        console.warn('[yjs] ', 'Changed the client-id because another client seems to be using it.', {
+        console.error('[yjs] ', 'Changed the client-id because another client seems to be using it.', {
           doc,
           clientID: doc.clientID,
           clientIDBefore: transaction.beforeState.get(doc.clientID),
