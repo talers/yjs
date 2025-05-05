@@ -351,16 +351,19 @@ const cleanupTransactions = (transactionCleanups, i) => {
         }
       }
       if (!transaction.local && transaction.afterState.get(doc.clientID) !== transaction.beforeState.get(doc.clientID)) {
+        const newClientID = generateNewClientId()
         logging.print(logging.ORANGE, logging.BOLD, '[yjs] ', logging.UNBOLD, logging.RED, 'Changed the client-id because another client seems to be using it.', {
           doc,
           clientID: doc.clientID,
           clientIDBefore: transaction.beforeState.get(doc.clientID),
           clientIDAfter: transaction.afterState.get(doc.clientID),
           transaction: { ...transaction },
-          beforeState: { ...transaction.beforeState },
-          afterState: { ...transaction.afterState },
+          beforeState: transaction.beforeState,
+          afterState: transaction.afterState,
+          newClientID,
+          document: doc.getMap().toJSON(),
         })
-        doc.clientID = generateNewClientId()
+        doc.clientID = newClientID
       }
       // @todo Merge all the transactions into one and provide send the data as a single update message
       doc.emit('afterTransactionCleanup', [transaction, doc])
